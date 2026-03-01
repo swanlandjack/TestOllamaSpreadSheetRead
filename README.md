@@ -151,7 +151,7 @@ Open the file `excel-ai-analyzer.html` directly in your web browser (Chrome or F
 ## ⚙️ How It Works (Under the Hood)
 
 ```
-Your Excel File
+Your Excel / CSV File
       ↓
   server.py reads it with Pandas
       ↓
@@ -164,28 +164,59 @@ Your Excel File
   Answer streams back to the browser
 ```
 
-Your data stays on your machine at every step.
+### Why does Python convert the spreadsheet to text first?
+
+Most local AI models running through Ollama — including `qwen2.5`, `llama3`, and others — are **text-only models**. They cannot directly open or read binary file formats like `.xlsx` or `.xls`, and they do not natively understand the structure of a CSV file the way a spreadsheet application would.
+
+By using Python and Pandas to read the file first, the backend converts your spreadsheet into a clean, structured text document that includes:
+
+- Column names and their data types
+- Summary statistics for each column (sum, average, min, max, blank count)
+- A sample of the actual rows formatted as a readable table
+
+This text representation is what gets sent to the AI model. The model reads it the same way it reads any other text — and because it is well-structured, the model can answer questions about your data accurately.
+
+This is also why your data stays private: there is no file upload to a cloud service, just plain text passed to a model running entirely on your own machine.
 
 ---
 
-## 🔧 Configuration (Optional)
+## 🔧 Configuration — Choosing a Model (Optional)
 
-You can change the default AI model or Ollama URL by setting environment variables before running the server:
+You can use **any model available in Ollama** — just pull it and set it as the default before starting the server. Here are some popular options:
+
+| Model | Pull Command | Best For |
+|---|---|---|
+| `qwen2.5` *(default)* | `ollama pull qwen2.5` | Great all-rounder, good at data and numbers |
+| `llama3.2` | `ollama pull llama3.2` | Meta's latest, excellent general reasoning |
+| `llama3.2:3b` | `ollama pull llama3.2:3b` | Smaller/faster version, good for slower machines |
+| `mistral` | `ollama pull mistral` | Fast and efficient, strong at following instructions |
+| `gemma3` | `ollama pull gemma3` | Google's model, good at structured data questions |
+| `phi4` | `ollama pull phi4` | Microsoft's compact model, surprisingly capable |
+| `deepseek-r1` | `ollama pull deepseek-r1` | Strong reasoning and analysis |
+
+> Browse the full model library at [https://ollama.com/library](https://ollama.com/library)
+
+To switch models, set the environment variable before running the server:
 
 ```bash
-# Use a different Ollama model
-export OLLAMA_MODEL=llama3.2
-
-# Use Ollama running on a different machine
-export OLLAMA_BASE_URL=http://192.168.1.100:11434
-
+# Mac / Linux
+export OLLAMA_MODEL=mistral
 python server.py
 ```
 
 On Windows (Command Prompt), use `set` instead of `export`:
 
 ```cmd
-set OLLAMA_MODEL=llama3.2
+set OLLAMA_MODEL=mistral
+python server.py
+```
+
+You can also switch models on the fly using the **model dropdown** in the top bar of the browser interface — no need to restart the server.
+
+To use Ollama running on a different machine on your network:
+
+```bash
+export OLLAMA_BASE_URL=http://192.168.1.100:11434
 python server.py
 ```
 

@@ -193,20 +193,37 @@ The AI reads a **text summary** of your data — column names, statistics, and a
 
 ### Q: Can I use a different AI model?
 
-Yes. Any model available in Ollama will work. First pull the model you want:
+Yes — this is one of the best features of using Ollama. You are not locked into any single model. Any model from the Ollama library will work with this app. Simply pull the model you want and set it before starting the server.
+
+Here are some good options to try:
+
+| Model | Command | Notes |
+|---|---|---|
+| `qwen2.5` *(default)* | `ollama pull qwen2.5` | Good all-rounder for data analysis |
+| `llama3.2` | `ollama pull llama3.2` | Meta's model, strong general reasoning |
+| `llama3.2:3b` | `ollama pull llama3.2:3b` | Faster/lighter version for slower machines |
+| `mistral` | `ollama pull mistral` | Fast, great at following instructions |
+| `gemma3` | `ollama pull gemma3` | Google's model, good at structured questions |
+| `phi4` | `ollama pull phi4` | Microsoft's compact but capable model |
+| `deepseek-r1` | `ollama pull deepseek-r1` | Strong at reasoning and step-by-step analysis |
+
+Browse the full library at [https://ollama.com/library](https://ollama.com/library)
+
+To switch models via the command line:
 
 ```bash
-ollama pull mistral
-```
-
-Then start the server with that model:
-
-```bash
+# Mac / Linux
 export OLLAMA_MODEL=mistral
 python server.py
 ```
 
-You can also switch models directly in the app's dropdown menu in the top bar of the browser interface.
+```cmd
+:: Windows
+set OLLAMA_MODEL=mistral
+python server.py
+```
+
+You can also switch models on the fly using the **model dropdown menu** in the top bar of the browser interface — no need to restart the server. The dropdown will show all models you have already pulled.
 
 ---
 
