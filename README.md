@@ -248,6 +248,8 @@ conda deactivate
 
 See [FAQ.md](FAQ.md) for troubleshooting help.
 
+On Youtube:   https://www.youtube.com/watch?v=6CrwxdVzRAs
+
 ---
 
 ## 📄 License
